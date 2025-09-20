@@ -1,4 +1,4 @@
-const API_URL = "https://opensheet.elk.sh/1pzcIo8ijBwKyj0gKBBI3uMr6VD0naoRtAQ1PrQNkCp8/Sheet1";
+const API_URL = "https://opensheet.elk.sh/1pzcIo8ijBwKyj0gKBBI3uMr6VD0naoRtAQ1PrQNkCp8/Questions";
 let questions = [];
 let currentIndex = 0;
 let selectedAnswers = [];
@@ -82,3 +82,4 @@ function restartExam() {
 }
 
 loadQuestions();
+
