@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Exam</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" id="exam-container">
+    <h1>Online Exam</h1>
+    <div id="question-box">
+      <p id="question"></p>
+      <div id="options"></div>
+    </div>
+    <div class="nav-buttons">
+      <button id="prevBtn" onclick="prevQuestion()">Previous</button>
+      <button id="nextBtn" onclick="nextQuestion()">Next</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="summary-container">
+    <h1>Exam Summary</h1>
+    <div id="summary"></div>
+    <button onclick="restartExam()">Restart Exam</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
