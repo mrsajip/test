@@ -71,7 +71,27 @@ function showSummary() {
 
   summaryHtml += `</table><h2>Your Score: ${score} / ${examQuestions.length}</h2>`;
   document.getElementById("summary").innerHTML = summaryHtml;
+
+  // Chart.js Pie Chart
+  const ctx = document.getElementById("resultChart").getContext("2d");
+  new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: ["Correct", "Wrong"],
+      datasets: [{
+        data: [score, examQuestions.length - score],
+        backgroundColor: ["#4caf50", "#f44336"], // green / red
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" }
+      }
+    }
+  });
 }
+
 
 function restartExam() {
   currentIndex = 0;
@@ -82,6 +102,7 @@ function restartExam() {
 }
 
 loadQuestions();
+
 
 
 
