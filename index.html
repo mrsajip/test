@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <title>Online Exam</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Chart.js for summary chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <!-- Exam Section -->
   <div class="container" id="exam-container">
     <h1>Online Exam</h1>
     <div id="question-box">
@@ -18,17 +21,17 @@
     </div>
   </div>
 
+  <!-- Summary Section -->
   <div class="container hidden" id="summary-container">
-</div>
     <h1>Exam Summary</h1>
     <div id="summary"></div>
+    <!-- Chart area -->
+    <div style="margin-top:20px;">
+      <canvas id="resultChart" width="400" height="400"></canvas>
+    </div>
     <button onclick="restartExam()">Restart Exam</button>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
