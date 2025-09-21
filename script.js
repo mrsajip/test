@@ -72,6 +72,7 @@ function showSummary() {
   summaryHtml += `</table><h2>Your Score: ${score} / ${examQuestions.length}</h2>`;
   document.getElementById("summary").innerHTML = summaryHtml;
 }
+
 function restartExam() {
   currentIndex = 0;
   selectedAnswers = [];
@@ -81,6 +82,7 @@ function restartExam() {
 }
 
 loadQuestions();
+
 
 
 
