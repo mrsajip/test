@@ -2,7 +2,7 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   background: #f0f4f8;
   margin: 0;
-  padding: 40px 0;
+  padding: 20px 0;
 }
 
 .container {
@@ -131,3 +131,4 @@ button:hover {
   background: #f8d7da !important;
   border: 2px solid red !important;
 }
+
