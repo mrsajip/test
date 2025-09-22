@@ -11,7 +11,18 @@ async function loadQuestions() {
   allQuestions = await response.json();
 }
 
+// Wait for DOM load
+window.onload = async () => {
+  await loadQuestions();
+
+  // Attach button events
+  document.getElementById("tutorialBtn").onclick = startTutorial;
+  document.getElementById("testBtn").onclick = startTest;
+};
+
 function startTutorial() {
+  if (allQuestions.length === 0) return alert("Questions not loaded yet!");
+
   mode = "tutorial";
   examQuestions = shuffle([...allQuestions]); // all questions
   currentIndex = 0;
@@ -25,8 +36,10 @@ function startTutorial() {
 }
 
 function startTest() {
+  if (allQuestions.length === 0) return alert("Questions not loaded yet!");
+
   mode = "test";
-  examQuestions = shuffle([...allQuestions]).slice(0, 10); // 10 random questions
+  examQuestions = shuffle([...allQuestions]).slice(0, 10);
   currentIndex = 0;
   selectedAnswers = [];
   showingAnswer = false;
@@ -139,5 +152,3 @@ function goHome() {
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
-
-loadQuestions();
