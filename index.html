@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>LSS Exam Tutorial</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Home Page -->
   <div class="container" id="home-container">
-    <h1>Exam Tutorial for LSS Students</h1>
+    <div class="top-bar">
+      <h1>LSS Exam Tutorial</h1>
+      <button class="toggleDarkBtn" onclick="toggleDarkMode()">🌙</button>
+    </div>
     <p>Select a mode to start:</p>
     <button onclick="startTutorial()">Tutorial Mode</button>
     <button onclick="startTest()">Test Mode</button>
@@ -20,6 +23,7 @@
     <div class="top-bar">
       <button class="homeBtn" onclick="goHome()">Home</button>
       <h1 id="modeTitle"></h1>
+      <button class="toggleDarkBtn" onclick="toggleDarkMode()">🌙</button>
     </div>
     <div id="question-box">
       <p id="question"></p>
@@ -37,14 +41,11 @@
     <div class="top-bar">
       <button class="homeBtn" onclick="goHome()">Home</button>
       <h1>Exam Summary</h1>
+      <button class="toggleDarkBtn" onclick="toggleDarkMode()">🌙</button>
     </div>
     <div id="summary"></div>
   </div>
 
-  <!-- Script always loaded last -->
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
