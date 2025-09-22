@@ -121,3 +121,13 @@ button:hover {
 #backBtn:hover {
   background: #8e44ad;
 }
+
+.option.correct {
+  background: #d4edda !important;
+  border: 2px solid green !important;
+}
+
+.option.wrong {
+  background: #f8d7da !important;
+  border: 2px solid red !important;
+}
