@@ -1,16 +1,39 @@
 const API_URL = "https://opensheet.elk.sh/1pzcIo8ijBwKyj0gKBBI3uMr6VD0naoRtAQ1PrQNkCp8/Questions";
-let questions = [];
-let currentIndex = 0;
-let selectedAnswers = [];
+let allQuestions = [];
 let examQuestions = [];
+let selectedAnswers = [];
+let currentIndex = 0;
+let mode = ""; // "tutorial" or "test"
+let showingAnswer = false;
 
 async function loadQuestions() {
   const response = await fetch(API_URL);
-  const data = await response.json();
+  allQuestions = await response.json();
+}
 
-  // Pick 10 random questions
-  examQuestions = data.sort(() => 0.5 - Math.random()).slice(0, 10);
+function startTutorial() {
+  mode = "tutorial";
+  examQuestions = shuffle([...allQuestions]); // use all questions
+  currentIndex = 0;
+  selectedAnswers = [];
+  showingAnswer = false;
 
+  document.getElementById("home-container").classList.add("hidden");
+  document.getElementById("exam-container").classList.remove("hidden");
+  document.getElementById("modeTitle").innerText = "Tutorial Mode";
+  showQuestion();
+}
+
+function startTest() {
+  mode = "test";
+  examQuestions = shuffle([...allQuestions]).slice(0, 10); // 10 random questions
+  currentIndex = 0;
+  selectedAnswers = [];
+  showingAnswer = false;
+
+  document.getElementById("home-container").classList.add("hidden");
+  document.getElementById("exam-container").classList.remove("hidden");
+  document.getElementById("modeTitle").innerText = "Test Mode";
   showQuestion();
 }
 
@@ -18,13 +41,15 @@ function showQuestion() {
   const q = examQuestions[currentIndex];
   document.getElementById("question").innerText = `${currentIndex + 1}. ${q.Question}`;
 
+  let options = ["Opt 1", "Opt 2", "Opt 3", "Opt 4"].map(opt => q[opt]);
+  options = shuffle(options); // shuffle options every time
+
   let optionsHtml = "";
-  ["Opt 1", "Opt 2", "Opt 3", "Opt 4"].forEach((opt, i) => {
-    const checked = selectedAnswers[currentIndex] === q[opt] ? "checked" : "";
+  options.forEach(opt => {
+    const checked = selectedAnswers[currentIndex] === opt ? "checked" : "";
     optionsHtml += `
       <label class="option">
-        <input type="radio" name="option" value="${q[opt]}" ${checked} 
-        onchange="selectOption('${q[opt]}')"> ${q[opt]}
+        <input type="radio" name="option" value="${opt}" ${checked} onchange="selectOption('${opt}')"> ${opt}
       </label>`;
   });
 
@@ -36,11 +61,23 @@ function selectOption(answer) {
 }
 
 function nextQuestion() {
+  const q = examQuestions[currentIndex];
+
+  if (mode === "tutorial" && !showingAnswer) {
+    // show correct answer first
+    document.getElementById("options").innerHTML = `
+      <p style="color: green; font-weight:bold;">Correct Answer: ${q["Correct Answer"]}</p>`;
+    showingAnswer = true;
+    return;
+  }
+
+  showingAnswer = false;
   if (currentIndex < examQuestions.length - 1) {
     currentIndex++;
     showQuestion();
   } else {
-    showSummary();
+    if (mode === "test") showSummary();
+    else goHome(); // after tutorial go home
   }
 }
 
@@ -56,7 +93,7 @@ function showSummary() {
   document.getElementById("summary-container").classList.remove("hidden");
 
   let score = 0;
-  let summaryHtml = "<table border='1' cellpadding='8'><tr><th>Q.No</th><th>Your Answer</th><th>Correct Answer</th></tr>";
+  let summaryHtml = "<table><tr><th>Q.No</th><th>Your Answer</th><th>Correct Answer</th></tr>";
 
   examQuestions.forEach((q, i) => {
     const userAns = selectedAnswers[i] || "Not Answered";
@@ -74,17 +111,18 @@ function showSummary() {
 }
 
 function restartExam() {
-  currentIndex = 0;
-  selectedAnswers = [];
-  document.getElementById("exam-container").classList.remove("hidden");
+  if (mode === "test") startTest();
+  else startTutorial();
+}
+
+function goHome() {
+  document.getElementById("exam-container").classList.add("hidden");
   document.getElementById("summary-container").classList.add("hidden");
-  loadQuestions();
+  document.getElementById("home-container").classList.remove("hidden");
+}
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
 }
 
 loadQuestions();
-
-
-
-
-
-
