@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Online Exam</title>
+  <title>LSS Exam Tutorial</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js for summary chart -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <!-- Home Page -->
+  <div class="container" id="home-container">
+    <h1>LSS Exam Tutorial</h1>
+    <p>Select a mode to start:</p>
+    <button onclick="startTutorial()">Tutorial Mode</button>
+    <button onclick="startTest()">Test Mode</button>
+  </div>
+
   <!-- Exam Section -->
-  <div class="container" id="exam-container">
-    <h1>Online Exam</h1>
+  <div class="container hidden" id="exam-container">
+    <h1 id="modeTitle"></h1>
     <div id="question-box">
       <p id="question"></p>
       <div id="options"></div>
@@ -25,11 +31,8 @@
   <div class="container hidden" id="summary-container">
     <h1>Exam Summary</h1>
     <div id="summary"></div>
-    <!-- Chart area -->
-    <div style="margin-top:20px;">
-      <canvas id="resultChart" width="400" height="400"></canvas>
-    </div>
     <button onclick="restartExam()">Restart Exam</button>
+    <button onclick="goHome()">Back to Home</button>
   </div>
 
   <script src="script.js"></script>
