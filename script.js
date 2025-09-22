@@ -83,11 +83,26 @@ function nextQuestion() {
   const q = examQuestions[currentIndex];
 
   if (mode === "tutorial" && !showingAnswer) {
-    // Show correct answer before moving
-    document.getElementById("options").innerHTML =
-      `<p style="color: green; font-weight:bold;">Correct Answer: ${q["Correct Answer"]}</p>`;
-    showingAnswer = true;
+    const userAns = selectedAnswers[currentIndex];
 
+    if (userAns === q["Correct Answer"]) {
+      // ✅ Correct
+      document.getElementById("options").innerHTML = `
+        <p style="color: green; font-weight:bold;">
+          ✅ Correct! The answer is: ${q["Correct Answer"]}
+        </p>`;
+    } else {
+      // ❌ Wrong
+      document.getElementById("options").innerHTML = `
+        <p style="color: red; font-weight:bold;">
+          ❌ Your Answer: ${userAns || "Not Answered"}
+        </p>
+        <p style="color: green; font-weight:bold;">
+          ✅ Correct Answer: ${q["Correct Answer"]}
+        </p>`;
+    }
+
+    showingAnswer = true;
     document.getElementById("prevBtn").classList.add("hidden");
     document.getElementById("backBtn").classList.remove("hidden");
     return;
@@ -149,3 +164,4 @@ function goHome() {
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
+
