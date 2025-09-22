@@ -6,22 +6,19 @@ let currentIndex = 0;
 let mode = ""; // "tutorial" or "test"
 let showingAnswer = false;
 
+// Load questions once when page opens
 async function loadQuestions() {
-  const response = await fetch(API_URL);
-  allQuestions = await response.json();
+  try {
+    const response = await fetch(API_URL);
+    allQuestions = await response.json();
+  } catch (err) {
+    alert("Failed to load questions. Please check your API link.");
+  }
 }
-
-// Wait for DOM load
-window.onload = async () => {
-  await loadQuestions();
-
-  // Attach button events
-  document.getElementById("tutorialBtn").onclick = startTutorial;
-  document.getElementById("testBtn").onclick = startTest;
-};
+loadQuestions();
 
 function startTutorial() {
-  if (allQuestions.length === 0) return alert("Questions not loaded yet!");
+  if (!allQuestions.length) return alert("Questions are still loading... try again.");
 
   mode = "tutorial";
   examQuestions = shuffle([...allQuestions]); // all questions
@@ -36,10 +33,10 @@ function startTutorial() {
 }
 
 function startTest() {
-  if (allQuestions.length === 0) return alert("Questions not loaded yet!");
+  if (!allQuestions.length) return alert("Questions are still loading... try again.");
 
   mode = "test";
-  examQuestions = shuffle([...allQuestions]).slice(0, 10);
+  examQuestions = shuffle([...allQuestions]).slice(0, 10); // 10 random
   currentIndex = 0;
   selectedAnswers = [];
   showingAnswer = false;
@@ -87,8 +84,8 @@ function nextQuestion() {
 
   if (mode === "tutorial" && !showingAnswer) {
     // Show correct answer before moving
-    document.getElementById("options").innerHTML = `
-      <p style="color: green; font-weight:bold;">Correct Answer: ${q["Correct Answer"]}</p>`;
+    document.getElementById("options").innerHTML =
+      `<p style="color: green; font-weight:bold;">Correct Answer: ${q["Correct Answer"]}</p>`;
     showingAnswer = true;
 
     document.getElementById("prevBtn").classList.add("hidden");
