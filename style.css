@@ -189,3 +189,31 @@ body.dark #summary th {
   from {opacity: 0; transform: translateY(20px);}
   to {opacity: 1; transform: translateY(0);}
 }
+/* Correct/Wrong highlights in tutorial mode */
+.option.correct {
+  background: #d4edda !important;   /* light green */
+  border: 2px solid green !important;
+  color: #155724;
+}
+.option.wrong {
+  background: #f8d7da !important;   /* light red */
+  border: 2px solid red !important;
+  color: #721c24;
+}
+.option .option-icon {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+/* Dark mode for correct/wrong */
+body.dark .option.correct {
+  background: #234d2a !important;   /* darker green */
+  border-color: #27ae60 !important;
+  color: #b8f7c6;
+}
+body.dark .option.wrong {
+  background: #4d2323 !important;   /* darker red */
+  border-color: #e74c3c !important;
+  color: #f5b7b1;
+}
+
