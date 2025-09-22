@@ -26,7 +26,7 @@ function startTutorial() {
 
 function startTest() {
   mode = "test";
-  examQuestions = shuffle([...allQuestions]).slice(0, 10); // 10 random questions
+  examQuestions = shuffle([...allQuestions]).slice(0, 10);
   currentIndex = 0;
   selectedAnswers = [];
   showingAnswer = false;
@@ -42,7 +42,7 @@ function showQuestion() {
   document.getElementById("question").innerText = `${currentIndex + 1}. ${q.Question}`;
 
   let options = ["Opt 1", "Opt 2", "Opt 3", "Opt 4"].map(opt => q[opt]);
-  options = shuffle(options); // shuffle options every time
+  options = shuffle(options);
 
   let optionsHtml = "";
   options.forEach(opt => {
@@ -54,6 +54,15 @@ function showQuestion() {
   });
 
   document.getElementById("options").innerHTML = optionsHtml;
+
+  // Show correct buttons depending on tutorial state
+  if (mode === "tutorial" && showingAnswer) {
+    document.getElementById("prevBtn").classList.add("hidden");
+    document.getElementById("backBtn").classList.remove("hidden");
+  } else {
+    document.getElementById("prevBtn").classList.remove("hidden");
+    document.getElementById("backBtn").classList.add("hidden");
+  }
 }
 
 function selectOption(answer) {
@@ -68,6 +77,10 @@ function nextQuestion() {
     document.getElementById("options").innerHTML = `
       <p style="color: green; font-weight:bold;">Correct Answer: ${q["Correct Answer"]}</p>`;
     showingAnswer = true;
+
+    // switch buttons
+    document.getElementById("prevBtn").classList.add("hidden");
+    document.getElementById("backBtn").classList.remove("hidden");
     return;
   }
 
@@ -84,6 +97,7 @@ function nextQuestion() {
 function prevQuestion() {
   if (currentIndex > 0) {
     currentIndex--;
+    showingAnswer = false;
     showQuestion();
   }
 }
@@ -98,12 +112,15 @@ function showSummary() {
   examQuestions.forEach((q, i) => {
     const userAns = selectedAnswers[i] || "Not Answered";
     const correct = q["Correct Answer"];
-    if (userAns === correct) score++;
-    summaryHtml += `<tr>
-      <td>${i + 1}</td>
-      <td>${userAns}</td>
-      <td>${correct}</td>
-    </tr>`;
+    if (userAns === correct) {
+      score++;
+    } else {
+      summaryHtml += `<tr>
+        <td>${i + 1}</td>
+        <td style="color:red;">${userAns}</td>
+        <td style="color:green;">${correct}</td>
+      </tr>`;
+    }
   });
 
   summaryHtml += `</table><h2>Your Score: ${score} / ${examQuestions.length}</h2>`;
