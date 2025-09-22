@@ -16,23 +16,29 @@
 
   <!-- Exam Section -->
   <div class="container hidden" id="exam-container">
-    <h1 id="modeTitle"></h1>
+    <div class="top-bar">
+      <button class="homeBtn" onclick="goHome()">Home</button>
+      <h1 id="modeTitle"></h1>
+    </div>
     <div id="question-box">
       <p id="question"></p>
       <div id="options"></div>
     </div>
     <div class="nav-buttons">
       <button id="prevBtn" onclick="prevQuestion()">Previous</button>
+      <button id="backBtn" class="hidden" onclick="prevQuestion()">Back</button>
       <button id="nextBtn" onclick="nextQuestion()">Next</button>
     </div>
   </div>
 
   <!-- Summary Section -->
   <div class="container hidden" id="summary-container">
-    <h1>Exam Summary</h1>
+    <div class="top-bar">
+      <button class="homeBtn" onclick="goHome()">Home</button>
+      <h1>Exam Summary</h1>
+    </div>
     <div id="summary"></div>
     <button onclick="restartExam()">Restart Exam</button>
-    <button onclick="goHome()">Back to Home</button>
   </div>
 
   <script src="script.js"></script>
