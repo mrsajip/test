@@ -102,15 +102,17 @@ button:hover {
 }
 
 .toggleDarkBtn {
-  background: #555;
-  border-radius: 50%;
-  font-size: 1rem;
-  padding: 8px 12px;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-left: 8px;
 }
 
 .toggleDarkBtn:hover {
-  background: #333;
+  transform: scale(1.2);
 }
+
 
 #backBtn {
   background: #9b59b6;
@@ -216,4 +218,5 @@ body.dark .option.wrong {
   border-color: #e74c3c !important;
   color: #f5b7b1;
 }
+
 
