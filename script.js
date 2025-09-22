@@ -84,23 +84,27 @@ function nextQuestion() {
 
   if (mode === "tutorial" && !showingAnswer) {
     const userAns = selectedAnswers[currentIndex];
+    const correctAns = q["Correct Answer"];
+    const optionElements = document.querySelectorAll("#options input");
 
-    if (userAns === q["Correct Answer"]) {
-      // ✅ Correct
-      document.getElementById("options").innerHTML = `
-        <p style="color: green; font-weight:bold;">
-          ✅ Correct! The answer is: ${q["Correct Answer"]}
-        </p>`;
-    } else {
-      // ❌ Wrong
-      document.getElementById("options").innerHTML = `
-        <p style="color: red; font-weight:bold;">
-          ❌ Your Answer: ${userAns || "Not Answered"}
-        </p>
-        <p style="color: green; font-weight:bold;">
-          ✅ Correct Answer: ${q["Correct Answer"]}
-        </p>`;
-    }
+    optionElements.forEach(input => {
+      input.disabled = true; // disable all options
+      const label = input.parentElement;
+
+      if (input.value === correctAns) {
+        // highlight correct answer
+        label.style.background = "#d4edda"; // light green
+        label.style.border = "2px solid green";
+        label.innerHTML += " ✅";
+      }
+
+      if (input.value === userAns && userAns !== correctAns) {
+        // highlight wrong selected answer
+        label.style.background = "#f8d7da"; // light red
+        label.style.border = "2px solid red";
+        label.innerHTML += " ❌";
+      }
+    });
 
     showingAnswer = true;
     document.getElementById("prevBtn").classList.add("hidden");
@@ -108,6 +112,7 @@ function nextQuestion() {
     return;
   }
 
+  // Normal navigation after feedback
   showingAnswer = false;
   if (currentIndex < examQuestions.length - 1) {
     currentIndex++;
@@ -120,7 +125,6 @@ function nextQuestion() {
     }
   }
 }
-
 function prevQuestion() {
   if (currentIndex > 0) {
     currentIndex--;
@@ -164,4 +168,5 @@ function goHome() {
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
+
 
