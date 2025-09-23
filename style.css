@@ -206,3 +206,30 @@ button:hover {
   from {opacity: 0; transform: translateY(20px);}
   to {opacity: 1; transform: translateY(0);}
 }
+
+/* Mobile optimizations */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;   /* less padding on small screens */
+  }
+
+  .container {
+    width: 95%;      /* shrink to fit */
+    padding: 15px;
+  }
+
+  .home-actions button {
+    display: block;
+    width: 100%;     /* full width buttons for easy tap */
+    margin: 8px 0;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+  }
+
+  .nav-buttons button {
+    width: 100%;
+  }
+}
+
