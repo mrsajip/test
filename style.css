@@ -101,10 +101,6 @@ button:hover {
   background: #c0392b;
 }
 
-
-
-
-
 #backBtn {
   background: #9b59b6;
 }
@@ -135,6 +131,22 @@ button:hover {
   overflow-x: auto;
 }
 
+/* Correct/Wrong highlights in tutorial mode */
+.option.correct {
+  background: #d4edda !important;
+  border: 2px solid green !important;
+  color: #155724;
+}
+.option.wrong {
+  background: #f8d7da !important;
+  border: 2px solid red !important;
+  color: #721c24;
+}
+.option .option-icon {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
   h1 {
@@ -154,27 +166,39 @@ button:hover {
   }
 }
 
-/* Dark mode */
-body.dark {
-  background: #121212;
-  color: #eee;
-}
-body.dark .container {
-  background: #1e1e1e;
-  color: #eee;
-}
-body.dark h1 {
-  color: #f1f1f1;
-}
-body.dark .option {
-  border: 1px solid #555;
-}
-body.dark .option:hover {
-  background: #2c2c2c;
-}
-body.dark #summary th {
-  background: #333;
-  color: #fff;
+/* Dark mode via system settings */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: #eee;
+  }
+  .container {
+    background: #1e1e1e;
+    color: #eee;
+  }
+  h1 {
+    color: #f1f1f1;
+  }
+  .option {
+    border: 1px solid #555;
+  }
+  .option:hover {
+    background: #2c2c2c;
+  }
+  #summary th {
+    background: #333;
+    color: #fff;
+  }
+  .option.correct {
+    background: #234d2a !important;
+    border-color: #27ae60 !important;
+    color: #b8f7c6;
+  }
+  .option.wrong {
+    background: #4d2323 !important;
+    border-color: #e74c3c !important;
+    color: #f5b7b1;
+  }
 }
 
 /* Smooth fade animation */
@@ -182,37 +206,3 @@ body.dark #summary th {
   from {opacity: 0; transform: translateY(20px);}
   to {opacity: 1; transform: translateY(0);}
 }
-/* Correct/Wrong highlights in tutorial mode */
-.option.correct {
-  background: #d4edda !important;   /* light green */
-  border: 2px solid green !important;
-  color: #155724;
-}
-.option.wrong {
-  background: #f8d7da !important;   /* light red */
-  border: 2px solid red !important;
-  color: #721c24;
-}
-.option .option-icon {
-  margin-left: 8px;
-  font-weight: bold;
-}
-
-/* Dark mode for correct/wrong */
-body.dark .option.correct {
-  background: #234d2a !important;   /* darker green */
-  border-color: #27ae60 !important;
-  color: #b8f7c6;
-}
-body.dark .option.wrong {
-  background: #4d2323 !important;   /* darker red */
-  border-color: #e74c3c !important;
-  color: #f5b7b1;
-}
-
-
-
-
-
-
-
