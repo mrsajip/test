@@ -26,28 +26,43 @@ async function loadQuestions() {
 loadQuestions();
 
 /* ---------- DARK MODE ---------- */
-function updateDarkButton() {
-  const btns = document.querySelectorAll(".toggleDarkBtn");
-  const isDark = document.body.classList.contains("dark");
-  btns.forEach(btn => {
-    btn.textContent = isDark ? "ON" : "OFF";
-  });
-}
-
-function toggleDarkMode() {
-  const isDark = document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
-  updateDarkButton();
-}
-
-// Initialize on load
-(function initDarkMode() {
-  const saved = localStorage.getItem("darkMode");
-  if (saved === "enabled") {
-    document.body.classList.add("dark");
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: #eee;
   }
-  updateDarkButton();
-})();
+  .container {
+    background: #1e1e1e;
+    color: #eee;
+  }
+  h1 {
+    color: #f1f1f1;
+  }
+  .option {
+    border: 1px solid #555;
+  }
+  .option:hover {
+    background: #2c2c2c;
+  }
+  #summary th {
+    background: #333;
+    color: #fff;
+  }
+  /* Correct/Wrong highlight colors for dark */
+  .option.correct {
+    background: #234d2a !important;
+    border-color: #27ae60 !important;
+    color: #b8f7c6;
+  }
+  .option.wrong {
+    background: #4d2323 !important;
+    border-color: #e74c3c !important;
+    color: #f5b7b1;
+  }
+}
+
+
+
 
 
 /* ---------- UTIL ---------- */
@@ -254,4 +269,5 @@ window.toggleDarkMode = toggleDarkMode;
 
 // update toggle icons in case there are multiple toggle buttons created later
 updateToggleIcons();
+
 
