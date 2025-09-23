@@ -101,14 +101,7 @@ button:hover {
   background: #c0392b;
 }
 
-body.dark .toggleDarkBtn {
-  background: #444;
-  color: #fff;
-  border-color: #666;
-}
-body.dark .toggleDarkBtn:hover {
-  background: #555;
-}
+
 
 
 
@@ -216,6 +209,7 @@ body.dark .option.wrong {
   border-color: #e74c3c !important;
   color: #f5b7b1;
 }
+
 
 
 
