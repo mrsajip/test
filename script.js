@@ -26,24 +26,29 @@ async function loadQuestions() {
 loadQuestions();
 
 /* ---------- DARK MODE ---------- */
-function updateToggleIcons() {
-  document.querySelectorAll(".toggleDarkBtn").forEach(btn => {
-    btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+function updateDarkButton() {
+  const btns = document.querySelectorAll(".toggleDarkBtn");
+  const isDark = document.body.classList.contains("dark");
+  btns.forEach(btn => {
+    btn.textContent = isDark ? "ON" : "OFF";
   });
 }
 
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle("dark");
   localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
-  updateToggleIcons();
+  updateDarkButton();
 }
 
-// initialize dark mode (script loaded at bottom so DOM exists)
+// Initialize on load
 (function initDarkMode() {
   const saved = localStorage.getItem("darkMode");
-  if (saved === "enabled") document.body.classList.add("dark");
-  updateToggleIcons();
+  if (saved === "enabled") {
+    document.body.classList.add("dark");
+  }
+  updateDarkButton();
 })();
+
 
 /* ---------- UTIL ---------- */
 function shuffle(arr) {
@@ -249,3 +254,4 @@ window.toggleDarkMode = toggleDarkMode;
 
 // update toggle icons in case there are multiple toggle buttons created later
 updateToggleIcons();
+
