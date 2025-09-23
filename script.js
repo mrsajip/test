@@ -1,5 +1,4 @@
-// script.js - updated: robust dark mode + working toggles on every page.
-// Replace your previous script.js with this file.
+// script.js - Clean version without dark mode button
 
 const API_URL = "https://opensheet.elk.sh/1pzcIo8ijBwKyj0gKBBI3uMr6VD0naoRtAQ1PrQNkCp8/Questions";
 
@@ -11,63 +10,22 @@ let mode = ""; // "tutorial" or "test"
 let showingAnswer = false;
 let loaded = false;
 
-// load questions once
+// Load questions once
 async function loadQuestions() {
   try {
     const res = await fetch(API_URL);
-    if (!res.ok) throw new Error("Network response not ok");
+    if (!res.ok) throw new Error("Network error");
     allQuestions = await res.json();
     loaded = Array.isArray(allQuestions) && allQuestions.length > 0;
   } catch (err) {
     console.error("Failed to load questions:", err);
-    alert("Failed to load questions. Check your API link / network.");
+    alert("Could not load questions. Please check your network.");
   }
 }
 loadQuestions();
 
-/* ---------- DARK MODE ---------- */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #121212;
-    color: #eee;
-  }
-  .container {
-    background: #1e1e1e;
-    color: #eee;
-  }
-  h1 {
-    color: #f1f1f1;
-  }
-  .option {
-    border: 1px solid #555;
-  }
-  .option:hover {
-    background: #2c2c2c;
-  }
-  #summary th {
-    background: #333;
-    color: #fff;
-  }
-  /* Correct/Wrong highlight colors for dark */
-  .option.correct {
-    background: #234d2a !important;
-    border-color: #27ae60 !important;
-    color: #b8f7c6;
-  }
-  .option.wrong {
-    background: #4d2323 !important;
-    border-color: #e74c3c !important;
-    color: #f5b7b1;
-  }
-}
-
-
-
-
-
 /* ---------- UTIL ---------- */
 function shuffle(arr) {
-  // Fisher-Yates
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -87,9 +45,9 @@ function escapeHTML(str) {
 
 /* ---------- MODE START ---------- */
 function startTutorial() {
-  if (!loaded) return alert("Questions are still loading. Please wait and try again.");
+  if (!loaded) return alert("Questions are still loading. Please wait.");
   mode = "tutorial";
-  examQuestions = shuffle([...allQuestions]); // all questions in random order
+  examQuestions = shuffle([...allQuestions]);
   selectedAnswers = new Array(examQuestions.length);
   currentIndex = 0;
   showingAnswer = false;
@@ -99,9 +57,9 @@ function startTutorial() {
 }
 
 function startTest() {
-  if (!loaded) return alert("Questions are still loading. Please wait and try again.");
+  if (!loaded) return alert("Questions are still loading. Please wait.");
   mode = "test";
-  examQuestions = shuffle([...allQuestions]).slice(0, 10); // pick 10
+  examQuestions = shuffle([...allQuestions]).slice(0, 10);
   selectedAnswers = new Array(examQuestions.length);
   currentIndex = 0;
   showingAnswer = false;
@@ -115,8 +73,6 @@ function showContainer(name) {
   document.getElementById("home-container").classList.toggle("hidden", name !== "home");
   document.getElementById("exam-container").classList.toggle("hidden", name !== "exam");
   document.getElementById("summary-container").classList.toggle("hidden", name !== "summary");
-  // ensure toggle icons reflect current state
-  updateToggleIcons();
 }
 
 /* ---------- QUESTIONS ---------- */
@@ -124,39 +80,33 @@ function showQuestion() {
   const q = examQuestions[currentIndex];
   document.getElementById("question").innerText = `${currentIndex + 1}. ${q.Question || ""}`;
 
-  // prepare options and shuffle them
   let options = ["Opt 1", "Opt 2", "Opt 3", "Opt 4"].map(k => q[k] || "");
   options = shuffle(options);
 
-  // figure checked index if user already answered
   const prevAnswer = selectedAnswers[currentIndex];
   const checkedIndex = prevAnswer != null ? options.indexOf(prevAnswer) : -1;
 
-  // build HTML using data-value indexes to avoid issues with quotes
   let html = "";
   options.forEach((opt, idx) => {
     const safe = escapeHTML(opt);
     const checked = idx === checkedIndex ? "checked" : "";
     html += `
-      <label class="option" data-idx="${idx}">
-        <input type="radio" name="option" ${checked} data-value="${idx}" />
+      <label class="option">
+        <input type="radio" name="option" ${checked} data-value="${opt}" />
         <span class="option-text">${safe}</span>
-        <span class="option-icon" aria-hidden="true"></span>
+        <span class="option-icon"></span>
       </label>`;
   });
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = html;
 
-  // attach listeners to inputs to capture answer (use closure of options array)
   document.querySelectorAll("#options input[type=radio]").forEach(input => {
     input.addEventListener("change", (e) => {
-      const idx = parseInt(e.target.getAttribute("data-value"), 10);
-      selectedAnswers[currentIndex] = options[idx];
+      selectedAnswers[currentIndex] = e.target.getAttribute("data-value");
     });
   });
 
-  // Reset button visibility depending on state
   if (mode === "tutorial" && showingAnswer) {
     document.getElementById("prevBtn").classList.add("hidden");
     document.getElementById("backBtn").classList.remove("hidden");
@@ -170,18 +120,15 @@ function showQuestion() {
 function nextQuestion() {
   const q = examQuestions[currentIndex];
 
-  // Tutorial feedback stage: show highlights first
   if (mode === "tutorial" && !showingAnswer) {
     const userAns = selectedAnswers[currentIndex];
     const correctAns = q["Correct Answer"];
 
-    // disable inputs and highlight labels
     document.querySelectorAll("#options .option").forEach(label => {
       const input = label.querySelector("input");
       const text = label.querySelector(".option-text").textContent;
       input.disabled = true;
 
-      // remove any previous classes
       label.classList.remove("correct", "wrong");
       label.querySelector(".option-icon").textContent = "";
 
@@ -195,14 +142,12 @@ function nextQuestion() {
       }
     });
 
-    // also if user didn't answer, still show correct option
     showingAnswer = true;
     document.getElementById("prevBtn").classList.add("hidden");
     document.getElementById("backBtn").classList.remove("hidden");
     return;
   }
 
-  // normal forward navigation
   showingAnswer = false;
   if (currentIndex < examQuestions.length - 1) {
     currentIndex++;
@@ -214,7 +159,6 @@ function nextQuestion() {
 }
 
 function prevQuestion() {
-  // go to previous question if exists
   if (currentIndex > 0) {
     currentIndex--;
     showingAnswer = false;
@@ -223,7 +167,6 @@ function prevQuestion() {
 }
 
 /* ---------- SUMMARY ---------- */
-// Show only wrong questions (question text + correct answer only)
 function showSummary() {
   showContainer("summary");
 
@@ -244,11 +187,11 @@ function showSummary() {
   });
 
   html += `</tbody></table></div>`;
-  html += `<h2>Your Score: ${ (examQuestions.length - wrongCount) } / ${ examQuestions.length }</h2>`;
+  html += `<h2>Your Score: ${(examQuestions.length - wrongCount)} / ${examQuestions.length}</h2>`;
   if (wrongCount === 0) {
     html += `<p>Great! All answers were correct.</p>`;
   } else {
-    html += `<p>Only the incorrectly answered questions are shown above.</p>`;
+    html += `<p>Only incorrectly answered questions are shown above.</p>`;
   }
 
   document.getElementById("summary").innerHTML = html;
@@ -259,15 +202,9 @@ function goHome() {
   showContainer("home");
 }
 
-/* ---------- EXPORTS for inline onclick handlers in HTML ---------- */
+/* ---------- EXPORTS ---------- */
 window.startTutorial = startTutorial;
 window.startTest = startTest;
 window.nextQuestion = nextQuestion;
 window.prevQuestion = prevQuestion;
 window.goHome = goHome;
-window.toggleDarkMode = toggleDarkMode;
-
-// update toggle icons in case there are multiple toggle buttons created later
-updateToggleIcons();
-
-
