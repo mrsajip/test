@@ -102,17 +102,17 @@ button:hover {
 }
 
 .toggleDarkBtn {
-  background: none;      /* no background */
-  border: none;          /* no border */
-  font-size: 1.4rem;     /* bigger icon */
+  background: none;       /* no background */
+  border: none;           /* no border */
+  font-size: 1.1rem;      /* smaller icon */
   cursor: pointer;
-  margin-left: 3px;
+  padding: 0;
+  margin: 0 4px;
   line-height: 1;
-  padding: 0;            /* no padding box */
 }
 
 .toggleDarkBtn:hover {
-  transform: scale(1.2); /* small zoom on hover (desktop) */
+  transform: scale(1.1);  /* tiny hover zoom on desktop */
 }
 
 
@@ -220,6 +220,7 @@ body.dark .option.wrong {
   border-color: #e74c3c !important;
   color: #f5b7b1;
 }
+
 
 
 
